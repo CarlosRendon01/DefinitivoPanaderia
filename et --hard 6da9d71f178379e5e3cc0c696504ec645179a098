@@ -1,0 +1,59 @@
+[33mcommit 6da9d71f178379e5e3cc0c696504ec645179a098[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mcambios-extras[m[33m, [m[1;31morigin/cambios-extras[m[33m)[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Thu Apr 25 20:53:44 2024 -0600
+
+    Login azul funciona
+
+[33mcommit 135ae65ded609513cfb7c7d95d6c3ec2ec64c3e0[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Thu Apr 18 02:12:53 2024 -0600
+
+    CRUDS CORRECTO SEGUN ELIAS
+
+[33mcommit c2a5b1a7c9dfef4b01f88a1c8b9a771201f9a931[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Wed Apr 17 12:27:48 2024 -0600
+
+    Cambios alumnos-crud todo bien
+
+[33mcommit deb20ae9389f98a16e524593ac79dfc19229caab[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Wed Apr 17 03:37:44 2024 -0600
+
+    Cambios id grupo y id materia, no funciona el editar de grupo
+
+[33mcommit 9f0fb6fe588eecc0293524bf1f15ff28c048aec7[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Tue Apr 16 02:09:50 2024 -0600
+
+    cambios_grupo
+
+[33mcommit 4660a46bda18b7518f5af68e586914c650654963[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/actualizaciones[m[33m, [m[1;32mmain[m[33m)[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Wed Apr 10 11:28:00 2024 -0600
+
+    menu actualizado
+
+[33mcommit 77876f235da3512a9d1e2ebbe9b1f5ba0119be2a[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Wed Apr 10 07:48:08 2024 -0600
+
+    validaEstudiantesHorarios
+
+[33mcommit cac9e3df4ca1f7a03c91935aff5f83edfecb447a[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Tue Apr 9 12:41:13 2024 -0600
+
+    Busca y muestra todos
+
+[33mcommit a16e2aac85f117a46377a1ce17cd8b14c6fe6265[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Tue Apr 9 12:24:11 2024 -0600
+
+    Busca y muestra
+
+[33mcommit 5a0b2d61eca68fa11e49ddd5aba4945cdce9a43e[m
+Author: Tu Nombre <eliasrj824@gmail.com>
+Date:   Mon Apr 8 12:21:46 2024 -0600
+
+    first commit
