@@ -90,8 +90,7 @@ body {
         {{ session('success') }}
     </div>
     @endif
-    @if(auth()->user()->canAny(['ver-rol', 'crear-rol', 'editar-rol', 'borrar-rol', 'ver-producto', 'crear-producto',
-    'editar-producto', 'borrar-producto', 'ver-log', 'ver-ventas']))
+   
     <div class="d-flex justify-content-center align-items-center mb-5">
     @can('crear-producto')
         <a class="btn btn-warning mx-3" href="{{ route('productos.create') }}">
@@ -134,7 +133,7 @@ body {
                         <a href="{{ route('productos.edit', $producto->id) }}"
                             class="btn btn-warning mb-1 p-2 rounded-0 w-100">Editar</a>
                             @endcan
-                            @can('eliminar-producto')
+                            @can('borrar-producto')
                         <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="w-100">
                             @csrf
                             @method('DELETE')
@@ -178,7 +177,7 @@ body {
     <div class="d-flex justify-content-center mt-4">
         {{ $productos->links() }}
     </div>
-    @endif
+    
 </div>
 
 @endsection

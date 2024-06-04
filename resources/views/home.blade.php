@@ -128,88 +128,14 @@ img {
 </style>
 
 @section('content')
-@can('ver-dashboard')
-<section class="section">
-    <div class="section-header">
-        <h3 class="page__heading">Dashboard</h3>
-    </div>
-    <div class="section-body">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card shadow">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card card-custom bg-primary text-white shadow">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fa fa-users"></i> Usuarios</h5>
-                                        @php
-                                        $cant_usuarios = \App\Models\User::count();
-                                        @endphp
-                                        <h2 class="text-right">
-                                            <span>{{$cant_usuarios}}</span>
-                                        </h2>
-                                        <p class="mb-0 text-right"><a href="/usuarios" class="text-white">Ver más</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card card-custom bg-warning text-white shadow">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fa fa-user-lock"></i> Roles</h5>
-                                        @php
-                                        $cant_roles = \Spatie\Permission\Models\Role::count();
-                                        @endphp
-                                        <h2 class="text-right">
-                                            <span>{{$cant_roles}}</span>
-                                        </h2>
-                                        <p class="mb-0 text-right"><a href="/roles" class="text-white">Ver más</a></p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card card-custom bg-danger text-white shadow">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fa fa-user-graduate"></i>Productos</h5>
-                                        @php
-                                        $cant_productos = \App\Models\Producto::count();
-                                        @endphp
-                                        <h2 class="text-right">
-                                            <span>{{$cant_productos}}</span>
-                                        </h2>
-                                        <p class="mb-0 text-right"><a href="/productos" class="text-white">Ver más</a></p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-xl-4">
-                                <div class="card card-custom bg-danger text-white shadow">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><i class="fa fa-user-graduate"></i> Materia prima</h5>
-                            
-                                        @php
-                                            $cant_materias = \App\Models\Materia::count();
-                                        @endphp
-                            
-                                        <h2 class="text-right">
-                                            <span>{{ $cant_materias }}</span>
-                                        </h2>
-                            
-                                        <p class="mb-0 text-right"><a href="/materias" class="text-white">Ver más</a></p>
-                                    </div>
-                                </div>
-                            </div>                            
-                            <!-- More card blocks -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+@can('editar-perfil')
+<div class="welcome-section">
+    <h1 class="welcome-title">Sistema de la Panificadora "El Triunfo"</h1>
+    <img src="https://i.ibb.co/D5sLS9N/baker-817282.png" alt="Gestión de panadero" width="200px">
+</div>
 @else
 <div class="welcome-section">
-    <h1 class="welcome-title">Bienvenido al Sistema de la Panificadora el triunfo</h1>
+    <h1 class="welcome-title">Bienvenido al Sistema de la Panificadora "El Triunfo"</h1>
     <p class="welcome-message text-danger">Contacta al administrador para poder optener permisos .</p>
     <img src="https://i.ibb.co/D5sLS9N/baker-817282.png" alt="Gestión de panadero" width="200px">
 </div>

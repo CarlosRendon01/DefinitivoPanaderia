@@ -399,7 +399,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            @can('crear-roles')
+                            @can('crear-rol')
                             <a class="btn btn-warning" href="{{ route('roles.create') }}">
                                 <i class="fas fa-plus"></i> Nuevo Rol
                             </a>
@@ -419,14 +419,14 @@
                                     <tr>
                                         <td>{{ $role->name }}</td>
                                         <td class="text-center">
-                                            @can('editar-roles')
+                                            @can('editar-rol')
                                             <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-warning mr-1 css-button-sliding-to-left--yellow">
                                                 <i class="fas fa-edit"></i>
                                                 Editar
                                             </a>
                                             @endcan
 
-                                            @can('eliminar-roles')
+                                            @can('borrar-rol')
                                         <button type="button" class="btn btn-danger css-button-sliding-to-left--red" onclick="confirmarEliminacion({{ $role->id }})">
                                             <i class="fas fa-trash-alt"></i>
                                             Eliminar
@@ -450,13 +450,13 @@
                                 <div class="row">
                                     <div class="col-6"><label>Acciones:</label></div>
                                     <div class="row action-buttons">
-                                        @can('editar-roles')
+                                        @can('editar-rol')
                                         <a href="{{ route('roles.edit', $role->id) }}"
                                             class="btn btn-warning btn-mobile">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
                                         @endcan
-                                        @can('borrar-roles')
+                                        @can('borrar-rol')
                                         <form action="{{ route('roles.destroy', $role->id) }}" method="POST"
                                             class="d-inline-block">
                                             @csrf

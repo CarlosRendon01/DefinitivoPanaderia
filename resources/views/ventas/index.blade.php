@@ -624,8 +624,7 @@ body {
         {{ session('success') }}
     </div>
     @endif
-    @if(auth()->user()->canAny(['ver-rol', 'crear-rol', 'editar-rol', 'borrar-rol', 'ver-producto', 'crear-producto',
-    'editar-producto', 'borrar-producto', 'ver-log', 'ver-ventas']))
+    
 
     <div class="section-body">
         <div class="row">
@@ -640,12 +639,12 @@ body {
                             </div>
                             <!-- Botón para añadir nueva venta -->
                             <!-- Botón y formulario para el corte de caja -->
-                            @can('editar-ventas')
+                            @can('editar-venta')
 
                             <a class="btn btn-success" onclick="openCorteDeCajaModal();">
                                 <i class="fas fa-cash-register"></i> Corte de Caja
                             </a>
-                            @endif
+                            @endcan
 
                             <div id="corteDeCajaModal"
                                 style="display: none; position: fixed; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 1050;">
@@ -662,19 +661,19 @@ body {
                                         style="margin-top: 10px;">Cerrar</button>
                                 </div>
                             </div>
-                            @can('editar-ventas')
+                            @can('editar-venta')
 
                             <!-- Botón para el reporte del día -->
                             <a class="btn btn-info" href="{{ route('ventas.reporteDelDia') }}">
                                 <i class="fas fa-file-pdf"></i> Reporte del Día
                             </a>
-                            @endif
-                            @can('editar-ventas')
+                            @endcan
+                            @can('editar-venta')
 
                             <button class="btn btn-info" onclick="openReportePorRangoModal();">
                                 <i class="fas fa-calendar-alt"></i> Reporte por Rango
                             </button>
-                            @endif
+                            @endcan
 
                             <!-- Modal para reporte por rango de fechas -->
                             <div id="reportePorRangoModal"
@@ -697,7 +696,7 @@ body {
                                 </div>
                             </div>
 
-                            @can('crear-ventas')
+                            @can('crear-venta')
                             <a class="btn btn-success" href="{{ route('ventas.create') }}">
                                 <i class="fas fa-plus"></i> Nuevo
                             </a>
@@ -730,23 +729,23 @@ body {
                                                     class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    @can('eliminar-ventas')
+                                                    @can('borrar-venta')
 
                                                     <button type="submit" class="btn btn-danger"
                                                         onclick="return confirm('¿Estás seguro de eliminar esta venta?')">
                                                         <i class="fas fa-trash-alt"></i> Eliminar
                                                     </button>
-                                                    @endif
+                                                    @endcan
                                                 </form>
-                                                @can('editar-ventas')
+                                                @can('editar-venta')
                                                 <a href="{{ route('ventas.edit', $venta->id) }}"
                                                     class="btn btn-warning">Editar</a>
-                                                @endif
+                                                
                                                 <a class="btn btn-info" onclick="showModal({{ $venta->id }})">Ver
                                                     Detalle</a>
                                                 <a href="{{ route('ventas.pdf', $venta->id) }}"
                                                     class="btn btn-primary">Generar PDF</a>
-
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>
@@ -879,7 +878,7 @@ body {
             </div>
         </div>
     </div>
-    @endif
+    
 
 </section>
 <script>

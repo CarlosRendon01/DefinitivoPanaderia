@@ -495,11 +495,12 @@
                             <a class="btn btn-warning mx-3" href="{{ route('materias.create') }}">
                                 <i class="fas fa-plus"></i> Nuevo ingrediente
                             </a>
-                            @endcan
+                            
                             
                             <a class="btn btn-warning" href="{{ route('materias.showChargeForm') }}">
                                 <i class="fas fa-plus"></i> Cargar Materias
                             </a>
+                            @endcan
                         </div>
 
                         <table class="table table-striped mt-2" id="miTabla2">
@@ -538,13 +539,13 @@
                                     <td style="text-align: center;">{{ $materia->unidad }}</td>
                                     <td style="text-align: center;">{{ $materia->precio }}</td>
                                     <td style="text-align: center;">
-                                        @can('editar-materias')
+                                        @can('editar-materia')
                                         <a href="{{ route('materias.edit', $materia->id) }}"
                                             class="btn btn-warning mr-1 css-button-sliding-to-left--yellow">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
                                         @endcan
-                                        @can('borrar-materias')
+                                        @can('borrar-materia')
                                         <button type="button" class="btn btn-danger css-button-sliding-to-left--red"
                                             onclick="confirmarEliminacion({{ $materia->id }})">
                                             <i class="fas fa-trash-alt"></i> Eliminar

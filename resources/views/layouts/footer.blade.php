@@ -1,3 +1,3 @@
 <div class="footer-left">
-    Rafa Suavicrema &copy; {{ date('Y') }}
+    Ing De Software &copy; {{ date('Y') }}
 </div>

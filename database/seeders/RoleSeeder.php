@@ -16,8 +16,8 @@ class RoleSeeder extends Seeder
     {
         // Array con configuración de roles y sus permisos específicos
         $rolesPermissions = [
-            'Admin' => [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,18,20,21,22,23,24,25,26,27],
-            'Empleado' => [9,19,20,24,25]
+            'Admin' => [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25],
+            'Empleado' => [10,18,19,22,23]
         ];
 
         // Iterar sobre cada rol y sus permisos para crearlos y asignar los permisos

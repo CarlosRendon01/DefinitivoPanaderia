@@ -10,6 +10,15 @@ use PDF;
 
 class PedidoController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:ver-pedido')->only('index');
+        $this->middleware('permission:crear-pedido', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar-pedido', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:borrar-pedido', ['only' => ['destroy']]);
+    }
+
     public function __invoke()
     {
         return view('pedidos.crear');

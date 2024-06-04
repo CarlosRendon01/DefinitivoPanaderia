@@ -14,6 +14,15 @@ use Carbon\Carbon;
 
 class MateriaController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:ver-materia')->only('index');
+        $this->middleware('permission:crear-materia', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar-materia', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:borrar-materia', ['only' => ['destroy']]);
+    }
+
     // Mostrar una lista de todas las materias
     public function index()
     {
@@ -163,7 +172,7 @@ public function reportePorRango(Request $request)
 {
     // Validación (similar al store, pero sin 'required' en imagen)
     $request->validate([
-        'nombre' => 'required|unique:materias,nombre|string|max:255',
+        'nombre' => 'required|string',
         'descripcion' => 'required|string',
         'proveedor' => 'required|string|max:255',
         'cantidad' => 'required|numeric|min:1',

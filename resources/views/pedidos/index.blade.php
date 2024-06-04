@@ -636,7 +636,7 @@ body {
                                     placeholder="Buscar por ID, Concepto o Total">
                             </div>
                             <!-- Botón para añadir nueva venta -->
-                            @can('crear-ventas')
+                            @can('crear-pedido')
                             <a class="btn btn-success" href="{{ route('pedidos.create') }}">
                                 <i class="fas fa-plus"></i> Nuevo
                             </a>
@@ -669,16 +669,19 @@ body {
                                                     class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
+                                                    @can('borrar-pedido')
                                                     <button type="submit" class="btn btn-danger"
                                                         onclick="return confirm('¿Estás seguro de eliminar esta pedido?')">
                                                         <i class="fas fa-trash-alt"></i> Eliminar
                                                     </button>
+                                                    @endcan
                                                 </form>
+                                                @can('editar-pedido')
                                                 <a href="{{ route('pedidos.edit', $pedido->id) }}" class="btn btn-warning">Editar</a>
                                                 <a class="btn btn-info" onclick="showModal({{ $pedido->id }})">Ver
                                                     Detalle</a>
                                                     <a href="{{ route('pedidos.pdf', $pedido->id) }}" class="btn btn-primary">Generar PDF</a>
-
+                                                @endcan
                                             </div>
                                         </td>
                                     </tr>
@@ -686,7 +689,7 @@ body {
                                 </tbody>
                             </table>
                         </div>
-
+                        @can('editar-pedido')
                         <div id="detalleVentaModal" class="custom-modal mt-5" style="margin-top:200px">
                             <div class="custom-modal-dialog">
                                 <div class="custom-modal-content">
@@ -720,6 +723,7 @@ body {
                                 </div>
                             </div>
                         </div>
+                        @endcan
                         <style>
                         .custom-modal {
                             display: none;

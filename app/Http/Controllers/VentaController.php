@@ -14,10 +14,10 @@ class VentaController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('permission:ver-ventas', ['only' => ['index', 'show']]);
-        $this->middleware('permission:crear-ventas', ['only' => ['create', 'store']]);
-        $this->middleware('permission:editar-ventas', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:eliminar-ventas', ['only' => ['destroy']]);
+        $this->middleware('permission:ver-venta', ['only' => ['index', 'show']]);
+        $this->middleware('permission:crear-venta', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar-venta', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:borrar-venta', ['only' => ['destroy']]);
     }   
     
     public function generarPDF($id)

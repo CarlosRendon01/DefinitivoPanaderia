@@ -15,6 +15,8 @@ class SeederTablaPermisos extends Seeder
     public function run()
     {
         $permisos = [
+            'editar-perfil',
+
             'ver-rol',
             'crear-rol',
             'editar-rol',
@@ -28,25 +30,22 @@ class SeederTablaPermisos extends Seeder
             'ver-producto',
             'crear-producto',
             'editar-producto',
-            'borrar-producto',
-            'funciones-producto',  
+            'borrar-producto',  
 
             'ver-materia',
             'crear-materia',
             'editar-materia',
-            'borrar-materia',
-            'funciones-materia',  
+            'borrar-materia',  
 
             'ver-venta',
             'crear-venta',
             'editar-venta',
-            'borrar-venta',
-            'funciones-venta',   
+            'borrar-venta',   
             
             'ver-pedido',
             'crear-pedido',
             'editar-pedido',
-            'borrar-pedido  ',
+            'borrar-pedido',
         ];        
 
         foreach ($permisos as $permiso) {

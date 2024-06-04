@@ -13,6 +13,15 @@ use Carbon\Carbon;
 
 class ProductoController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('permission:ver-producto')->only('index');
+        $this->middleware('permission:crear-producto', ['only' => ['create', 'store']]);
+        $this->middleware('permission:editar-producto', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:borrar-producto', ['only' => ['destroy']]);
+    }
+
     public function index()
     {
         $productos = Producto::paginate(6);
@@ -200,7 +209,7 @@ class ProductoController extends Controller
         $producto = Producto::findOrFail($id);
     
         $request->validate([
-            'nombre' => 'required|unique:productos,nombre|string|max:255',
+            'nombre' => 'required|string',
             'descripcion' => 'required|string',
             'cantidad' => 'required|integer|min:1',
             'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',

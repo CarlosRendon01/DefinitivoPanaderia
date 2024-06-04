@@ -480,7 +480,7 @@
                                             </a>
                                             @endcan
 
-                                            @can('eliminar-usuario')
+                                            @can('borrar-usuario')
                                             <button type="button" class="btn btn-danger css-button-sliding-to-left--red"
                                                 onclick="confirmarEliminacion({{ $usuario->id }})">
                                                 <i class="fas fa-trash-alt"></i>
@@ -528,7 +528,7 @@
                                         <i class="fas fa-edit"></i> Editar
                                     </a>
                                     @endcan
-                                    @can('eliminar-usuario')
+                                    @can('borrar-usuario')
                                     <button type="button" class="btn btn-danger btn-mobile"
                                         onclick="confirmarEliminacion({{ $usuario->id }})">
                                         <i class="fas fa-trash-alt"></i> Eliminar
