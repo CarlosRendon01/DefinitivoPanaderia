@@ -38,6 +38,10 @@
                                     <label for="extras">Extras</label>
                                     <textarea class="form-control" id="extras" name="extras" placeholder="Detalles adicionales" readonly></textarea>
                                 </div>
+                                <div class="form-group col-md-6">
+                                    <label for="comanda">Comanda</label>
+                                    <textarea class="form-control" id="comanda" name="comanda" placeholder="Detalles de la comanda"></textarea>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
@@ -350,41 +354,57 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function actualizarFormulario() {
-        const productosContainer = document.getElementById('productosContainer');
-        productosContainer.innerHTML = '';
+    const productosContainer = document.getElementById('productosContainer');
+    productosContainer.innerHTML = '';
 
-        let productos = JSON.parse(localStorage.getItem('productosPedido')) || [];
-        productos.forEach(producto => {
-            let inputId = document.createElement('input');
-            inputId.type = 'hidden';
-            inputId.name = 'productos[' + producto.id + '][id]';
-            inputId.value = producto.id;
+    let productos = JSON.parse(localStorage.getItem('productosPedido')) || [];
+    productos.forEach(producto => {
+        let inputId = document.createElement('input');
+        inputId.type = 'hidden';
+        inputId.name = 'productos[' + producto.id + '][id]';
+        inputId.value = producto.id;
 
-            let inputCantidad = document.createElement('input');
-            inputCantidad.type = 'hidden';
-            inputCantidad.name = 'productos[' + producto.id + '][cantidad]';
-            inputCantidad.value = producto.cantidad;
+        let inputCantidad = document.createElement('input');
+        inputCantidad.type = 'hidden';
+        inputCantidad.name = 'productos[' + producto.id + '][cantidad]';
+        inputCantidad.value = producto.cantidad;
 
-            productosContainer.appendChild(inputId);
-            productosContainer.appendChild(inputCantidad);
-        });
+        productosContainer.appendChild(inputId);
+        productosContainer.appendChild(inputCantidad);
+    });
 
-        let materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
-        materiasPrimas.forEach(materiaPrima => {
-            let inputId = document.createElement('input');
-            inputId.type = 'hidden';
-            inputId.name = 'materiasPrimas[' + materiaPrima.id + '][id]';
-            inputId.value = materiaPrima.id;
+    let materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
+    materiasPrimas.forEach(materiaPrima => {
+        let inputId = document.createElement('input');
+        inputId.type = 'hidden';
+        inputId.name = 'materiasPrimas[' + materiaPrima.id + '][id]';
+        inputId.value = materiaPrima.id;
 
-            let inputCantidad = document.createElement('input');
-            inputCantidad.type = 'hidden';
-            inputCantidad.name = 'materiasPrimas[' + materiaPrima.id + '][cantidad]';
-            inputCantidad.value = materiaPrima.cantidad;
+        let inputCantidad = document.createElement('input');
+        inputCantidad.type = 'hidden';
+        inputCantidad.name = 'materiasPrimas[' + materiaPrima.id + '][cantidad]';
+        inputCantidad.value = materiaPrima.cantidad;
 
-            productosContainer.appendChild(inputId);
-            productosContainer.appendChild(inputCantidad);
-        });
-    }
+        productosContainer.appendChild(inputId);
+        productosContainer.appendChild(inputCantidad);
+    });
+
+    // Combinar comanda con extras antes de enviar el formulario
+    let extrasTexto = document.getElementById('extras').value.trim();
+    let comandaTexto = document.getElementById('comanda').value.trim();
+    let detallesMateriasPrimas = materiasPrimas.map(mp => mp.nombre + ' x ' + mp.cantidad).join(', ');
+
+    // Remover duplicados si existen
+    let extrasSet = new Set(extrasTexto.split(', ').filter(e => e));
+    let comandaSet = new Set(comandaTexto.split(', ').filter(c => c));
+    //let materiasSet = new Set(detallesMateriasPrimas.split(', ').filter(m => m));
+
+    // Combinar los conjuntos
+    let combinedSet = new Set([...extrasSet, ...comandaSet]);
+    let combinedExtras = Array.from(combinedSet).join(', ');
+
+    document.getElementById('extras').value = combinedExtras;
+}
 
     function actualizarDineroExtra() {
         let materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
