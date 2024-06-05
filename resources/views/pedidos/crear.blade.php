@@ -125,11 +125,21 @@ document.addEventListener('DOMContentLoaded', function() {
     cargarProductosDeLocalStorage();
     actualizarCantidadesDisponibles();
 
+    function finalizarPedido() {
+        if (parseFloat(document.getElementById('cambio').value) >= 0) {
+            limpiarLocalStorage(); // Llama a la función para limpiar el almacenamiento local
+            document.getElementById('pedidoForm').submit();
+        } else {
+            alert('El dinero recibido no es suficiente para cubrir el total del pedido.');
+        }
+    }    
+
     document.getElementById('pedidoForm').addEventListener('submit', function(event) {
         if (!validarRecibo()) {
             event.preventDefault();
         }
         actualizarFormulario();
+        limpiarLocalStorage();
     });
 
     document.getElementById('recibo').addEventListener('input', function() {
@@ -394,6 +404,13 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             document.getElementById('cambio').value = '0.00';
         }
+    }
+
+    function limpiarLocalStorage() {
+        localStorage.removeItem('productosPedido');
+        localStorage.removeItem('materiasPrimasPedido');
+        localStorage.removeItem('cantidadesDisponibles');
+        localStorage.removeItem('cantidadesMateriaPrima');
     }
 
     function validarRecibo() {
