@@ -123,7 +123,7 @@ body {
                 </div>
 
                 <div class="card-body d-flex flex-column">
-                    <h4 class="text-truncate">{{ $producto->nombre }}</h4>
+                    <h4 class="text">{{ $producto->nombre }}</h4>
                     <p class="mb-0"><strong>Cantidad:</strong> {{ $producto->cantidad }}</p>
                     <p class="text-truncate">{{ $producto->descripcion }}</p>
 

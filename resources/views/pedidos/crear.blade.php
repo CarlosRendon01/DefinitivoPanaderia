@@ -22,7 +22,7 @@
                     </div>
                     @endif
                     <div class="card-body">
-                        <form id="ventaForm" action="{{ route('pedidos.store') }}" method="POST">
+                        <form id="pedidoForm" action="{{ route('pedidos.store') }}" method="POST">
                             @csrf
                             <div class="form-row">
                                 <div class="form-group col-md-2">
@@ -32,11 +32,11 @@
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label for="dinero">Dinero Extra ($)</label>
-                                    <input type="number" class="form-control" id="dinero" name="dinero" step="0.01" placeholder="Cantidad extra para sumar al total">
+                                    <input type="number" class="form-control" id="dinero" name="dinero" step="0.01" placeholder="Cantidad extra para sumar al total" readonly>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="extras">Extras</label>
-                                    <textarea class="form-control" id="extras" name="extras" placeholder="Detalles adicionales"></textarea>
+                                    <textarea class="form-control" id="extras" name="extras" placeholder="Detalles adicionales" readonly></textarea>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -60,6 +60,27 @@
                                         id="addProductButton">Agregar</button>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="materiaPrima">Materia Prima</label>
+                                    <select id="materiaPrima" class="form-control">
+                                        @foreach ($materiasPrimas as $materiaPrima)
+                                        <option value="{{ $materiaPrima->id }}" data-precio="{{ $materiaPrima->precio }}" data-cantidad="{{ $materiaPrima->cantidad }}">
+                                            {{ $materiaPrima->nombre }} - ${{ number_format($materiaPrima->precio, 2) }} - <span class="cantidad-disponible">{{ $materiaPrima->cantidad }}</span>
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label for="cantidadMateriaPrima">Cantidad</label>
+                                    <input type="number" class="form-control" id="cantidadMateriaPrima">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>&nbsp;</label>
+                                    <button type="button" class="btn btn-warning btn-block"
+                                        id="addMateriaPrimaButton">Agregar Materia Prima</button>
+                                </div>
+                            </div>
                             <div id="productosContainer"></div>
                             <input type="hidden" name="total" id="total">
                         </form>
@@ -76,22 +97,19 @@
                             <tbody>
                             </tbody>
                         </table>
-                        <h4>Total: $<span id="totalDisplay">0.00</span></h4>
-                        <button type="submit" form="ventaForm" class="btn btn-primary">Guardar Pedido</button>
+                        <div class="container mt-4">
+                            <div class="d-flex justify-content-between align-items-center form-group">
+                                <h5 class="mb-0">Total: $<span id="totalDisplay">0.00</span></h5>
+                                <h6 class="mb-0 mx-2">Recibo: <input class="form-control d-inline-block w-auto" id="recibo" type="number"></h6>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center form-group">
+                                <div class="ml-auto">
+                                    <h6 class="mb-0 mx-2">Cambio: <input class="form-control d-inline-block w-auto" type="text" id="cambio" value="0.00" disabled></h6>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" form="pedidoForm" class="btn btn-primary">Guardar Pedido</button>
                         <a href="{{ route('pedidos.index') }}" class="btn btn-danger">Cancelar</a>
-                        <div id="confirmVentaModal" style="display:none; position: fixed; z-index: 1050; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4);">
-    <div style="background-color: #fefefe; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 40%;">
-        <h2>Confirmar Pedido</h2>
-        <p>Total del pedido: $<span id="modalTotalCompra"></span></p>
-        <div>
-            <label for="dineroRecibido">Dinero recibido:</label>
-            <input type="number" id="dineroRecibido" class="form-control" step="0.01" oninput="calcularCambio()">
-        </div>
-        <p>Cambio: $<span id="cambio">0.00</span></p>
-        <button type="button" onclick="finalizarPedido()" class="btn btn-success">Confirmar Pedido</button>
-        <button type="button" onclick="cerrarModal()" class="btn btn-danger">Cancelar</button>
-    </div>
-</div>
                     </div>
                 </div>
             </div>
@@ -101,18 +119,22 @@
 @endsection
 
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addProductButton').addEventListener('click', agregarProducto);
-    document.getElementById('dinero').addEventListener('change', actualizarTotal);
+    document.getElementById('addMateriaPrimaButton').addEventListener('click', agregarMateriaPrima);
     cargarProductosDeLocalStorage();
     actualizarCantidadesDisponibles();
 
-    document.getElementById('ventaForm').addEventListener('submit', function(event) {
+    document.getElementById('pedidoForm').addEventListener('submit', function(event) {
+        if (!validarRecibo()) {
+            event.preventDefault();
+        }
         actualizarFormulario();
     });
 
-    document.getElementById('dinero').addEventListener('change', actualizarTotal);
+    document.getElementById('recibo').addEventListener('input', function() {
+        calcularCambio();
+    });
 
     function agregarProducto() {
         const productoSelect = document.getElementById('producto');
@@ -143,44 +165,86 @@ document.addEventListener('DOMContentLoaded', function() {
             subtotal: subtotal.toFixed(2)
         };
 
-        // Descontar la cantidad agregada del producto en la vista y en el localStorage
         selectedOption.setAttribute('data-cantidad', cantidadDisponible - cantidad);
         const cantidadDisponibleSpan = selectedOption.querySelector('.cantidad-disponible');
         if (cantidadDisponibleSpan) {
             cantidadDisponibleSpan.textContent = cantidadDisponible - cantidad;
         }
 
-        guardarEnLocalStorage(producto);
-        actualizarCantidadesEnLocalStorage(productoId, cantidadDisponible - cantidad);
+        guardarEnLocalStorage(producto, 'productosPedido');
+        actualizarCantidadesEnLocalStorage(productoId, cantidadDisponible - cantidad, 'cantidadesDisponibles');
         cantidadInput.value = '';
     }
 
-    function guardarEnLocalStorage(producto) {
-        let productos = JSON.parse(localStorage.getItem('productosVenta')) || [];
-        let productoExistente = productos.find(p => p.id === producto.id);
+    function agregarMateriaPrima() {
+        const materiaPrimaSelect = document.getElementById('materiaPrima');
+        const selectedOption = materiaPrimaSelect.options[materiaPrimaSelect.selectedIndex];
+        const materiaPrimaId = selectedOption.value;
+        const materiaPrimaNombre = selectedOption.text.split(' - $')[0];
+        const precio = parseFloat(selectedOption.getAttribute('data-precio'));
+        const cantidadDisponible = parseInt(selectedOption.getAttribute('data-cantidad'));
+        const cantidadInput = document.getElementById('cantidadMateriaPrima');
+        const cantidad = parseInt(cantidadInput.value);
+        const subtotal = precio * cantidad;
 
-        if (productoExistente) {
-            productoExistente.cantidad += producto.cantidad;
-            productoExistente.subtotal = (productoExistente.cantidad * productoExistente.precio).toFixed(2);
-        } else {
-            productos.push(producto);
+        if (cantidad <= 0 || isNaN(cantidad)) {
+            alert('Ingrese una cantidad válida.');
+            return;
         }
 
-        localStorage.setItem('productosVenta', JSON.stringify(productos));
+        if (cantidad > cantidadDisponible) {
+            alert('La cantidad ingresada excede la cantidad disponible de la materia prima.');
+            return;
+        }
+
+        const materiaPrima = {
+            id: materiaPrimaId,
+            nombre: materiaPrimaNombre,
+            cantidad: cantidad,
+            precio: precio,
+            subtotal: subtotal.toFixed(2)
+        };
+
+        selectedOption.setAttribute('data-cantidad', cantidadDisponible - cantidad);
+        const cantidadDisponibleSpan = selectedOption.querySelector('.cantidad-disponible');
+        if (cantidadDisponibleSpan) {
+            cantidadDisponibleSpan.textContent = cantidadDisponible - cantidad;
+        }
+
+        guardarEnLocalStorage(materiaPrima, 'materiasPrimasPedido');
+        actualizarCantidadesEnLocalStorage(materiaPrimaId, cantidadDisponible - cantidad, 'cantidadesMateriaPrima');
+        actualizarDineroExtra();
+        cantidadInput.value = '';
+    }
+
+    function guardarEnLocalStorage(item, key) {
+        let items = JSON.parse(localStorage.getItem(key)) || [];
+        let itemExistente = items.find(p => p.id === item.id);
+
+        if (itemExistente) {
+            itemExistente.cantidad += item.cantidad;
+            itemExistente.subtotal = (itemExistente.cantidad * itemExistente.precio).toFixed(2);
+        } else {
+            items.push(item);
+        }
+
+        localStorage.setItem(key, JSON.stringify(items));
         actualizarTabla();
         actualizarTotal();
         actualizarFormulario();
     }
 
-    function actualizarCantidadesEnLocalStorage(productoId, nuevaCantidad) {
-        let cantidades = JSON.parse(localStorage.getItem('cantidadesDisponibles')) || {};
-        cantidades[productoId] = nuevaCantidad;
-        localStorage.setItem('cantidadesDisponibles', JSON.stringify(cantidades));
+    function actualizarCantidadesEnLocalStorage(itemId, nuevaCantidad, key) {
+        let cantidades = JSON.parse(localStorage.getItem(key)) || {};
+        cantidades[itemId] = nuevaCantidad;
+        localStorage.setItem(key, JSON.stringify(cantidades));
     }
 
     function cargarProductosDeLocalStorage() {
-        const productos = JSON.parse(localStorage.getItem('productosVenta')) || [];
+        const productos = JSON.parse(localStorage.getItem('productosPedido')) || [];
         productos.forEach(agregarFilaATabla);
+        const materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
+        materiasPrimas.forEach(agregarFilaATabla);
         actualizarTotal();
     }
 
@@ -190,9 +254,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
         for (let i = 0; i < productoSelect.length; i++) {
             const option = productoSelect[i];
-            const productoId = option.value;
-            if (cantidades[productoId] !== undefined) {
-                const cantidadDisponible = cantidades[productoId];
+            const itemId = option.value;
+            if (cantidades[itemId] !== undefined) {
+                const cantidadDisponible = cantidades[itemId];
+                option.setAttribute('data-cantidad', cantidadDisponible);
+                const cantidadDisponibleSpan = option.querySelector('.cantidad-disponible');
+                if (cantidadDisponibleSpan) {
+                    cantidadDisponibleSpan.textContent = cantidadDisponible;
+                }
+            }
+        }
+
+        const cantidadesMateriaPrima = JSON.parse(localStorage.getItem('cantidadesMateriaPrima')) || {};
+        const materiaPrimaSelect = document.getElementById('materiaPrima').options;
+
+        for (let i = 0; i < materiaPrimaSelect.length; i++) {
+            const option = materiaPrimaSelect[i];
+            const itemId = option.value;
+            if (cantidadesMateriaPrima[itemId] !== undefined) {
+                const cantidadDisponible = cantidadesMateriaPrima[itemId];
                 option.setAttribute('data-cantidad', cantidadDisponible);
                 const cantidadDisponibleSpan = option.querySelector('.cantidad-disponible');
                 if (cantidadDisponibleSpan) {
@@ -211,51 +291,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
         row.remove();
 
-        let productos = JSON.parse(localStorage.getItem('productosVenta')) || [];
+        let productos = JSON.parse(localStorage.getItem('productosPedido')) || [];
         productos = productos.filter(producto => producto.id.toString() !== id.toString());
-        localStorage.setItem('productosVenta', JSON.stringify(productos));
+        localStorage.setItem('productosPedido', JSON.stringify(productos));
+
+        let materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
+        materiasPrimas = materiasPrimas.filter(materiaPrima => materiaPrima.id.toString() !== id.toString());
+        localStorage.setItem('materiasPrimasPedido', JSON.stringify(materiasPrimas));
 
         actualizarTabla();
         actualizarTotal();
         actualizarFormulario();
         actualizarCantidadesDisponibles();
+        actualizarDineroExtra();
     }
 
     function actualizarTabla() {
         const tbody = document.getElementById('productosTable').querySelector('tbody');
         tbody.innerHTML = '';
 
-        let productos = JSON.parse(localStorage.getItem('productosVenta')) || [];
+        let productos = JSON.parse(localStorage.getItem('productosPedido')) || [];
         productos.forEach(producto => agregarFilaATabla(producto));
+
+        let materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
+        materiasPrimas.forEach(materiaPrima => agregarFilaATabla(materiaPrima));
     }
 
-    function agregarFilaATabla(producto) {
+    function agregarFilaATabla(item) {
         const tbody = document.getElementById('productosTable').querySelector('tbody');
         const row = document.createElement('tr');
         row.innerHTML = `
-        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(this, '${producto.id}')">Eliminar</button></td>
-        <td>${producto.nombre}</td>
-        <td>${producto.cantidad}</td>
-        <td>$${producto.precio}</td>
-        <td>$${producto.subtotal}</td>
+        <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(this, '${item.id}')">Eliminar</button></td>
+        <td>${item.nombre}</td>
+        <td>${item.cantidad}</td>
+        <td>$${item.precio}</td>
+        <td>$${item.subtotal}</td>
         `;
         tbody.appendChild(row);
     }
 
     function actualizarTotal() {
-        let productos = JSON.parse(localStorage.getItem('productosVenta')) || [];
-    let total = productos.reduce((sum, producto) => sum + parseFloat(producto.subtotal), 0);
-    let dineroExtra = parseFloat(document.getElementById('dinero').value) || 0;
-    total += dineroExtra;
-    document.getElementById('totalDisplay').textContent = total.toFixed(2);
-    document.getElementById('total').value = total.toFixed(2);
+        let productos = JSON.parse(localStorage.getItem('productosPedido')) || [];
+        let total = productos.reduce((sum, producto) => sum + parseFloat(producto.subtotal), 0);
+        let dineroExtra = parseFloat(document.getElementById('dinero').value) || 0;
+        total += dineroExtra;
+        document.getElementById('totalDisplay').textContent = total.toFixed(2);
+        document.getElementById('total').value = total.toFixed(2);
     }
 
     function actualizarFormulario() {
         const productosContainer = document.getElementById('productosContainer');
         productosContainer.innerHTML = '';
 
-        let productos = JSON.parse(localStorage.getItem('productosVenta')) || [];
+        let productos = JSON.parse(localStorage.getItem('productosPedido')) || [];
         productos.forEach(producto => {
             let inputId = document.createElement('input');
             inputId.type = 'hidden';
@@ -270,47 +358,60 @@ document.addEventListener('DOMContentLoaded', function() {
             productosContainer.appendChild(inputId);
             productosContainer.appendChild(inputCantidad);
         });
+
+        let materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
+        materiasPrimas.forEach(materiaPrima => {
+            let inputId = document.createElement('input');
+            inputId.type = 'hidden';
+            inputId.name = 'materiasPrimas[' + materiaPrima.id + '][id]';
+            inputId.value = materiaPrima.id;
+
+            let inputCantidad = document.createElement('input');
+            inputCantidad.type = 'hidden';
+            inputCantidad.name = 'materiasPrimas[' + materiaPrima.id + '][cantidad]';
+            inputCantidad.value = materiaPrima.cantidad;
+
+            productosContainer.appendChild(inputId);
+            productosContainer.appendChild(inputCantidad);
+        });
     }
 
-    // Limpiar localStorage si la venta fue exitosa
-    @if(session('venta_exitosa'))
-        localStorage.removeItem('productosVenta');
-        localStorage.removeItem('cantidadesDisponibles');
+    function actualizarDineroExtra() {
+        let materiasPrimas = JSON.parse(localStorage.getItem('materiasPrimasPedido')) || [];
+        let totalMateriaPrima = materiasPrimas.reduce((sum, materiaPrima) => sum + parseFloat(materiaPrima.subtotal), 0);
+        document.getElementById('dinero').value = totalMateriaPrima.toFixed(2);
+        document.getElementById('extras').value = JSON.stringify(materiasPrimas.map(mp => mp.nombre + ' x ' + mp.cantidad));
+        actualizarTotal();
+    }
+
+    function calcularCambio() {
+        const total = parseFloat(document.getElementById('total').value);
+        const recibo = parseFloat(document.getElementById('recibo').value);
+        const cambio = recibo - total;
+
+        if (!isNaN(cambio) && cambio >= 0) {
+            document.getElementById('cambio').value = cambio.toFixed(2);
+        } else {
+            document.getElementById('cambio').value = '0.00';
+        }
+    }
+
+    function validarRecibo() {
+        const total = parseFloat(document.getElementById('total').value);
+        const recibo = parseFloat(document.getElementById('recibo').value);
+
+        if (isNaN(recibo) || recibo < total) {
+            alert('El monto recibido es incorrecto. Debe ser mayor o igual al total.');
+            return false;
+        }
+        return true;
+    }
+
+    @if(session('pedido_exitosa'))
+    localStorage.removeItem('productosPedido');
+    localStorage.removeItem('materiasPrimasPedido');
+    localStorage.removeItem('cantidadesDisponibles');
+    localStorage.removeItem('cantidadesMateriaPrima');
     @endif
 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('ventaForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        mostrarModalVenta();
-    });
-});
-
-function calcularCambio() {
-    const totalCompra = parseFloat(document.getElementById('modalTotalCompra').textContent);
-    const dineroRecibido = parseFloat(document.getElementById('dineroRecibido').value);
-    const cambio = dineroRecibido - totalCompra;
-
-    document.getElementById('cambio').textContent = cambio >= 0 ? cambio.toFixed(2) : '0.00';
-}
-
-function mostrarModalVenta() {
-    document.getElementById('modalTotalCompra').textContent = document.getElementById('totalDisplay').textContent;
-    document.getElementById('dineroRecibido').value = '';
-    document.getElementById('cambio').textContent = '0.00';
-    document.getElementById('confirmVentaModal').style.display = 'block';
-}
-
-function finalizarPedido() {
-    if (parseFloat(document.getElementById('cambio').textContent) >= 0) {
-        document.getElementById('ventaForm').submit();
-    } else {
-        alert('El dinero recibido no es suficiente para cubrir el total del pedido.');
-    }
-}
-
-function cerrarModal() {
-    document.getElementById('confirmVentaModal').style.display = 'none';
-}
 </script>
-    

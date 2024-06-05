@@ -205,64 +205,90 @@ class ProductoController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $producto = Producto::findOrFail($id);
-    
-        $request->validate([
-            'nombre' => 'required|string',
-            'descripcion' => 'required|string',
-            'cantidad' => 'required|integer|min:1',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'materias_primas' => 'required|array|min:1',
-            'materias_primas.*' => 'exists:materias,id',
-            'cantidades' => 'required|array|size:' . count($request->input('materias_primas', [])),
-            'cantidades.*' => 'numeric|min:1',
-        ], [
-            'materias_primas.required' => 'Debe seleccionar al menos una materia prima.',
-            'cantidades.required' => 'Debe ingresar una cantidad para cada materia prima seleccionada.',
-            'cantidades.size' => 'La cantidad de elementos en cantidades debe coincidir con el número de materias primas seleccionadas.',
-        ]);
-    
-        DB::beginTransaction();
-        try {
-            if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
-                if ($producto->imagen_url) {
-                    Storage::disk('public')->delete($producto->imagen_url);
-                }
-                $producto->imagen_url = $request->file('imagen')->store('imagenes_productos', 'public');
+{
+    $producto = Producto::findOrFail($id);
+
+    $request->validate([
+        'nombre' => 'required|string',
+        'descripcion' => 'required|string',
+        'cantidad' => 'required|integer|min:1',
+        'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        'materias_primas' => 'required|array|min:1',
+        'materias_primas.*' => 'exists:materias,id',
+        'cantidades' => 'required|array|size:' . count($request->input('materias_primas', [])),
+        'cantidades.*' => 'numeric|min:1',
+    ], [
+        'materias_primas.required' => 'Debe seleccionar al menos una materia prima.',
+        'cantidades.required' => 'Debe ingresar una cantidad para cada materia prima seleccionada.',
+        'cantidades.size' => 'La cantidad de elementos en cantidades debe coincidir con el número de materias primas seleccionadas.',
+    ]);
+
+    DB::beginTransaction();
+    try {
+        if ($request->hasFile('imagen') && $request->file('imagen')->isValid()) {
+            if ($producto->imagen_url) {
+                Storage::disk('public')->delete($producto->imagen_url);
             }
-    
-            // Calcular el nuevo precio basado en las materias primas y sus cantidades
-            $precioTotalMateriasPrimas = 0;
-            foreach ($request->input('materias_primas', []) as $index => $materiaPrimaId) {
-                $cantidad = $request->cantidades[$index];
-                $materiaPrima = Materia::findOrFail($materiaPrimaId);
-                $precioTotalMateriasPrimas += $materiaPrima->precio * $cantidad;
-            }
-            $nuevoPrecioProducto = $precioTotalMateriasPrimas * 1.5;
-    
-            // Actualizar el producto con el nuevo precio
-            $producto->update([
-                'nombre' => $request->nombre,
-                'descripcion' => $request->descripcion,
-                'cantidad' => $request->cantidad,
-                'precio' => $nuevoPrecioProducto,
-            ]);
-    
-            // Actualizar las materias primas del producto
-            $producto->materias()->sync([]);
-            foreach ($request->input('materias_primas', []) as $index => $materiaPrimaId) {
-                $cantidad = $request->cantidades[$index];
-                $producto->materias()->attach($materiaPrimaId, ['cantidad' => $cantidad]);
-            }
-    
-            DB::commit();
-            return redirect()->route('productos.index')->with('success', 'Producto actualizado exitosamente.');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return back()->withErrors(['error' => 'Error al actualizar el producto: ' . $e->getMessage()])->withInput();
+            $producto->imagen_url = $request->file('imagen')->store('imagenes_productos', 'public');
         }
+
+        // Obtener materias primas y cantidades
+        $materiasPrimas = $request->input('materias_primas', []);
+        $cantidades = $request->input('cantidades', []);
+        $cantidadProducto = $request->cantidad;
+
+        // Revertir las cantidades de las materias primas utilizadas en el producto original
+        foreach ($producto->materias as $materiaPrima) {
+            $cantidadNecesaria = $materiaPrima->pivot->cantidad * $producto->cantidad;
+            $materiaPrima->increment('cantidad', $cantidadNecesaria);
+        }
+
+        // Calcular el precio total de las materias primas para el nuevo producto
+        $precioTotalMateriasPrimas = 0;
+        foreach ($materiasPrimas as $index => $materiaPrimaId) {
+            $materiaPrima = Materia::findOrFail($materiaPrimaId);
+            $cantidadNecesaria = $cantidades[$index] * $cantidadProducto;
+
+            if ($materiaPrima->cantidad < $cantidadNecesaria) {
+                DB::rollback();
+                return redirect()->back()->withErrors([
+                    'cantidad' => 'No hay suficiente materia prima "' . $materiaPrima->nombre . '" para actualizar este producto.'
+                ])->withInput();
+            }
+
+            $precioTotalMateriasPrimas += $materiaPrima->precio * $cantidades[$index];
+        }
+
+        // Calcular el nuevo precio del producto (sumando el 50%)
+        $nuevoPrecioProducto = $precioTotalMateriasPrimas * 1.5;
+
+        // Actualizar el producto con el nuevo precio
+        $producto->update([
+            'nombre' => $request->nombre,
+            'descripcion' => $request->descripcion,
+            'precio' => $nuevoPrecioProducto,
+            'cantidad' => $cantidadProducto,
+        ]);
+
+        // Sincronizar materias primas y descontar cantidades
+        $producto->materias()->detach();
+        foreach ($materiasPrimas as $index => $materiaPrimaId) {
+            $materiaPrima = Materia::findOrFail($materiaPrimaId);
+            $cantidadNecesaria = $cantidades[$index] * $cantidadProducto;
+
+            $producto->materias()->attach($materiaPrimaId, ['cantidad' => $cantidades[$index]]);
+            $materiaPrima->decrement('cantidad', $cantidadNecesaria);
+        }
+
+        DB::commit();
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado exitosamente.');
+    } catch (\Exception $e) {
+        DB::rollback();
+        return back()->withErrors(['error' => 'Error al actualizar el producto: ' . $e->getMessage()])->withInput();
     }
+}
+
+
     
 
 private function handleImageUpload(Request $request, Producto $producto)
