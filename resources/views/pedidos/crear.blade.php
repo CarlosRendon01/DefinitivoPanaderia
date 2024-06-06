@@ -122,6 +122,8 @@
 </section>
 @endsection
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addProductButton').addEventListener('click', agregarProducto);
@@ -438,8 +440,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const recibo = parseFloat(document.getElementById('recibo').value);
 
         if (isNaN(recibo) || recibo < total) {
-            alert('El monto recibido es incorrecto. Debe ser mayor o igual al total.');
-            return false;
+            Swal.fire({
+            title: 'Error en el monto recibido',
+            text: 'El monto recibido es incorrecto. Debe ser mayor o igual al total.',
+            icon: 'error',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#3085d6'
+        });
+        return false;
         }
         return true;
     }

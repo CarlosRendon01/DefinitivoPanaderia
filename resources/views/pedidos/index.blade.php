@@ -665,17 +665,20 @@ body {
                                         <td class="text-center">{{ $pedido->total }}</td>
                                         <td class="text-center">
                                             <div>
-                                                <form action="{{ route('pedidos.destroy', $pedido->id) }}" method="POST"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
+                                                    
                                                     @can('borrar-pedido')
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('¿Estás seguro de eliminar esta pedido?')">
+                                                    <button type="button" class="btn btn-danger css-button-sliding-to-left--red"
+                                                        onclick="confirmarEliminacion({{ $pedido->id }})">
                                                         <i class="fas fa-trash-alt"></i> Eliminar
                                                     </button>
+                                                    <form id="eliminar-form-{{ $pedido->id }}"
+                                                        action="{{ route('pedidos.destroy', $pedido->id) }}" method="POST"
+                                                        class="d-none">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
                                                     @endcan
-                                                </form>
+                                                
                                                 @can('editar-pedido')
                                                 <a href="{{ route('pedidos.edit', $pedido->id) }}" class="btn btn-warning">Editar</a>
                                                 <a class="btn btn-info" onclick="showModal({{ $pedido->id }})">Ver
@@ -822,6 +825,30 @@ body {
     </div>
 </section>
 <script>
+
+function confirmarEliminacion(id) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('eliminar-form-' + id).submit();
+            Swal.fire({
+                title: 'Eliminado!',
+                text: 'El pedido ha sido eliminado correctamente.',
+                icon: 'success',
+                timer: 4000,
+                showConfirmButton: false
+            });
+        }
+    });
+}
+
 function showModal(pedidoId) {
     var modal = document.getElementById('detalleVentaModal');
     modal.style.display = "flex";
@@ -922,27 +949,6 @@ searchInput.addEventListener('input', function() {
 
 
 <script>
-function confirmarEliminacion(id) {
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: "¡No podrás revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminarlo'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('eliminar-form-' + id).submit();
-            Swal.fire({
-                title: 'Eliminado!',
-                text: 'El ingrediente ha sido eliminado correctamente.',
-                icon: 'success',
-                timer: 4000,
-                showConfirmButton: false
-            });
-        }
-    });
-}
+
 </script>
 @endsection

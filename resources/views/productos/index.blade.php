@@ -134,13 +134,17 @@ body {
                             class="btn btn-warning mb-1 p-2 rounded-0 w-100">Editar</a>
                             @endcan
                             @can('borrar-producto')
-                        <form action="{{ route('productos.destroy', $producto->id) }}" method="POST" class="w-100">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger p-2 rounded-0 w-100"
-                                onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">Eliminar</button>
-                        </form>
-                        @endcan
+                                                    <button type="button" class="btn btn-danger p-2 rounded-0 w-100"
+                                                        onclick="confirmarEliminacion({{ $producto->id }})">
+                                                        <i class="fas fa-trash-alt"></i> Eliminar
+                                                    </button>
+                                                    <form id="eliminar-form-{{ $producto->id }}"
+                                                        action="{{ route('productos.destroy', $producto->id) }}" method="POST"
+                                                        class="w-100">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
+                                                    @endcan
                         @can('editar-producto')
                         <button class="btn btn-primary mt-auto w-100" data-toggle="modal"
                             data-target="#materiaModal{{ $producto->id }}">Ver Materias Primas</button>
@@ -180,4 +184,29 @@ body {
     
 </div>
 
+
+<script>
+function confirmarEliminacion(id) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('eliminar-form-' + id).submit();
+            Swal.fire({
+                title: 'Eliminado!',
+                text: 'El producto ha sido eliminado correctamente.',
+                icon: 'success',
+                timer: 4000,
+                showConfirmButton: false
+            });
+        }
+    });
+}
+</script>
 @endsection

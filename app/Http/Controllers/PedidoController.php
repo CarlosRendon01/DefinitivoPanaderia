@@ -84,11 +84,11 @@ class PedidoController extends Controller
                 'total' => 'required|numeric',
                 'extras' => 'nullable|string',
                 'dinero' => 'nullable|numeric',
-                'productos' => 'required|array',
+                'productos' => 'required|array|min:1',
                 'productos.*.id' => 'required|integer|exists:productos,id',
                 'productos.*.cantidad' => 'required|integer|min:1',
                 'materiasPrimas' => 'nullable|array',
-                'materiasPrimas.*.id' => 'required|integer|exists:materias,id', // fixed table name
+                'materiasPrimas.*.id' => 'required|integer|exists:materias,id',
                 'materiasPrimas.*.cantidad' => 'required|integer|min:1'
             ]);
 

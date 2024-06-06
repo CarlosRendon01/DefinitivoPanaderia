@@ -725,18 +725,18 @@ body {
                                         <td class="text-center">{{ $venta->total }}</td>
                                         <td class="text-center">
                                             <div>
-                                                <form action="{{ route('ventas.destroy', $venta->id) }}" method="POST"
-                                                    class="d-inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    @can('borrar-venta')
-
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('¿Estás seguro de eliminar esta venta?')">
+                                            @can('borrar-venta')
+                                                    <button type="button" class="btn btn-danger css-button-sliding-to-left--red"
+                                                        onclick="confirmarEliminacion({{ $venta->id }})">
                                                         <i class="fas fa-trash-alt"></i> Eliminar
                                                     </button>
+                                                    <form id="eliminar-form-{{ $venta->id }}"
+                                                        action="{{ route('ventas.destroy', $venta->id) }}" method="POST"
+                                                        class="d-none">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                    </form>
                                                     @endcan
-                                                </form>
                                                 @can('editar-venta')
                                                 <a href="{{ route('ventas.edit', $venta->id) }}"
                                                     class="btn btn-warning">Editar</a>
@@ -990,7 +990,7 @@ function confirmarEliminacion(id) {
             document.getElementById('eliminar-form-' + id).submit();
             Swal.fire({
                 title: 'Eliminado!',
-                text: 'El ingrediente ha sido eliminado correctamente.',
+                text: 'La venta ha sido eliminado correctamente.',
                 icon: 'success',
                 timer: 4000,
                 showConfirmButton: false
