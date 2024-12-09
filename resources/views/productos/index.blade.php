@@ -93,11 +93,11 @@ body {
    
     <div class="d-flex justify-content-center align-items-center mb-5">
     @can('crear-producto')
-        <a class="btn btn-warning mx-3" href="{{ route('productos.create') }}">
+        <a class="btn btn-info mx-3" href="{{ route('productos.create') }}">
             <i class="fas fa-plus"></i> Crear Producto
         </a>
 
-        <a class="btn btn-warning" href="{{ route('productos.showChargeForm') }}">
+        <a class="btn btn-info" href="{{ route('productos.showChargeForm') }}">
             <i class="fas fa-plus"></i> Cargar Producto
         </a>
         @endcan
@@ -131,7 +131,7 @@ body {
                         <h5 class="display-5">${{ number_format($producto->precio, 2) }}</h5>
                         @can('editar-producto')
                         <a href="{{ route('productos.edit', $producto->id) }}"
-                            class="btn btn-warning mb-1 p-2 rounded-0 w-100">Editar</a>
+                            class="btn btn-primary mb-1 p-2 rounded-0 w-100">Editar</a>
                             @endcan
                             @can('borrar-producto')
                                                     <button type="button" class="btn btn-danger p-2 rounded-0 w-100"
@@ -146,7 +146,7 @@ body {
                                                     </form>
                                                     @endcan
                         @can('editar-producto')
-                        <button class="btn btn-primary mt-auto w-100" data-toggle="modal"
+                        <button class="btn btn-secondary mt-auto w-100" data-toggle="modal"
                             data-target="#materiaModal{{ $producto->id }}">Ver Materias Primas</button>
                             @endcan
                     </div>

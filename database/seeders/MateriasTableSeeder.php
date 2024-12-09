@@ -18,7 +18,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Harina de trigo',
                 'descripcion' => 'Harina utilizada en la mayoría de los panes dulces',
-                'proveedor' => 'Molinos del Sur',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -28,7 +27,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Azúcar',
                 'descripcion' => 'Azúcar blanca para endulzar',
-                'proveedor' => 'Dulces del Valle',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -38,7 +36,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Levadura',
                 'descripcion' => 'Levadura seca para la fermentación de masas',
-                'proveedor' => 'Levaduras Mexicanas',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -48,7 +45,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Mantequilla',
                 'descripcion' => 'Mantequilla para darle sabor y textura a los panes',
-                'proveedor' => 'Lácteos La Vaca Feliz',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -58,7 +54,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Huevos',
                 'descripcion' => 'Huevos frescos para enriquecer las masas',
-                'proveedor' => 'Granja El Pollito',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -68,7 +63,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Leche',
                 'descripcion' => 'Leche entera para la preparación de diversos panes',
-                'proveedor' => 'Lácteos La Vaca Feliz',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -78,7 +72,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Canela',
                 'descripcion' => 'Canela molida para aromatizar y dar sabor',
-                'proveedor' => 'Especias del Mundo',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -88,7 +81,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Vainilla',
                 'descripcion' => 'Extracto de vainilla para dar sabor a los panes',
-                'proveedor' => 'Sabores Naturales',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -98,7 +90,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Chocolate',
                 'descripcion' => 'Chocolate en polvo para saborizar',
-                'proveedor' => 'Chocolates La Abuela',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -108,7 +99,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Coco rallado',
                 'descripcion' => 'Coco deshidratado para decoración y sabor',
-                'proveedor' => 'Tropical Fruits',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -118,7 +108,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Anís',
                 'descripcion' => 'Anís en polvo para dar sabor',
-                'proveedor' => 'Especias del Mundo',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -128,7 +117,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Piloncillo',
                 'descripcion' => 'Panela o piloncillo para endulzar y dar sabor',
-                'proveedor' => 'Dulces del Valle',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -138,7 +126,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Fruta seca',
                 'descripcion' => 'Mezcla de frutas secas para panes y decoraciones',
-                'proveedor' => 'Frutos Secos del Norte',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -148,7 +135,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Mermelada de piña',
                 'descripcion' => 'Mermelada para relleno de empanadas',
-                'proveedor' => 'Conservas del Sur',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -158,7 +144,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Crema pastelera',
                 'descripcion' => 'Crema para rellenos y decoraciones',
-                'proveedor' => 'Lácteos La Vaca Feliz',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -168,7 +153,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Harina de maíz',
                 'descripcion' => 'Harina utilizada en algunos panes tradicionales',
-                'proveedor' => 'Molinos del Sur',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -178,7 +162,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Fécula de maíz',
                 'descripcion' => 'Fécula utilizada para dar textura',
-                'proveedor' => 'Especias del Mundo',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -188,7 +171,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Nueces',
                 'descripcion' => 'Nueces picadas para decoración y sabor',
-                'proveedor' => 'Frutos Secos del Norte',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -198,7 +180,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Almendras',
                 'descripcion' => 'Almendras fileteadas para decoración y sabor',
-                'proveedor' => 'Frutos Secos del Norte',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -208,7 +189,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Pasas',
                 'descripcion' => 'Pasas para incorporar en las masas',
-                'proveedor' => 'Frutos Secos del Norte',
                 'cantidad' => 10000,
                 'precio' => 2.00,
                 'created_at' => now(),
@@ -218,7 +198,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Ajonjolí',
                 'descripcion' => 'Semillas de ajonjolí para decoración',
-                'proveedor' => 'Especias del Mundo',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -228,7 +207,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Azúcar glas',
                 'descripcion' => 'Azúcar pulverizada para decoración',
-                'proveedor' => 'Dulces del Valle',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -238,7 +216,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Polvo de hornear',
                 'descripcion' => 'Agente leudante para las masas',
-                'proveedor' => 'Levaduras Mexicanas',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),
@@ -248,7 +225,6 @@ class MateriasTableSeeder extends Seeder
             [
                 'nombre' => 'Sal',
                 'descripcion' => 'Sal fina para dar sabor',
-                'proveedor' => 'Especias del Mundo',
                 'cantidad' => 10000,
                 'precio' => 1.00,
                 'created_at' => now(),

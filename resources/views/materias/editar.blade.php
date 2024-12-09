@@ -10,7 +10,7 @@
                             <i class="fas fa-arrow-left mr-2"></i> Regresar
                         </a>
                         <h3 class="page__heading text-center flex-grow-1 m-0">
-                            <i class="fas fa-book mr-2"></i> Editar Ingrediente
+                            <i class="fas fa-cubes mr-2"></i> Editar Ingrediente
                         </h3>
                     </div>
                     <div class="card-body p-4 bg-white">
@@ -45,12 +45,6 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <label for="proveedor" class="form-label">Nombre Proveedor</label>
-                    <input type="text" name="proveedor" class="form-control" value="{{ $materia->proveedor }}">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
                     <label for="cantidad" class="form-label">Cantidad</label>
                     <input type="number" name="cantidad" class="form-control" value="{{ $materia->cantidad }}" min="0">
                 </div>
@@ -71,22 +65,6 @@
                     <input type="text" name="precio" class="form-control" value="{{ $materia->precio }}">
                 </div>
             </div>
-
-            {{-- Campo para la imagen --}}
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <label for="imagen" class="form-label">Imagen (Opcional)</label>
-
-                    @if ($materia->imagen_url)
-                        <div>
-                            <img src="{{ asset('storage/' . $materia->imagen_url) }}" alt="{{ $materia->nombre }}" class="img-thumbnail" style="max-width: 200px;">
-                        </div>
-                    @endif
-
-                    <input type="file" name="imagen" class="form-control-file" id="imagen">
-                </div>
-            </div>
-
             <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                 <button type="submit" class="btn btn-pink btn-block btn-submit">Guardar</button>
             </div>

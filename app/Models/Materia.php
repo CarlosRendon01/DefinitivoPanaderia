@@ -18,10 +18,8 @@ class Materia extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
-        'proveedor',
         'cantidad',
         'precio',
-        'imagen_url',
         'unidad',
     ];
 

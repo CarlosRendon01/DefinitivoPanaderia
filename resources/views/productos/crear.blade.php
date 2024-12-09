@@ -37,8 +37,16 @@ body {
 
 @section('content')
 <section class="section">
-    <div class="container">
-        <h1 class="my-4">Crear Nuevo Producto</h1>
+    <div class="container col-md-8">
+        <div class="card-header d-flex align-items-center justify-content-between bg-primary text-white">
+            <a href="{{ url()->previous() }}" class="btn btn-back text-white">
+                <i class="fas fa-arrow-left mr-2"></i> Regresar
+            </a>
+            <h3 class="page__heading text-center flex-grow-1 m-0">
+                <i class="fas fa-box-open mr-2"></i> Crear Nuevo Producto
+            </h3>
+        </div>
+        <div class="card-body p-4 bg-white">
         @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -53,17 +61,17 @@ body {
             onsubmit="return validateMateriasPrimas()">
             @csrf
             {{-- Campos existentes (nombre, descripcion, precio, cantidad, imagen) --}}
-            <div class="form-group">
+            <div class="form-group col-md-12">
                 <label for="nombre">Nombre</label>
                 <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre"
                     value="{{ old('nombre') }}">
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-12">
                 <label for="descripcion">Descripción</label>
                 <textarea name="descripcion" class="form-control" id="descripcion"
                     required>{{ old('descripcion') }}</textarea>
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-12">
                 <label for="cantidad">Cantidad</label>
                 <input type="number" name="cantidad" class="form-control" id="cantidad" value="{{ old('cantidad') }}"
                     required>
@@ -100,6 +108,7 @@ body {
             </div>
             <button type="submit" class="btn btn-primary">Guardar</button>
         </form>
+    </div>
     </div>
 </section>
 

@@ -12,9 +12,15 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card shadow-lg border-0 rounded-lg">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="page__heading text-center">Cargar Materias</h3>
+                    <div class="card-header d-flex align-items-center justify-content-between bg-primary text-white">
+                        <a href="{{ url()->previous() }}" class="btn btn-back text-white">
+                            <i class="fas fa-arrow-left mr-2"></i> Regresar
+                        </a>
+                        <h3 class="page__heading text-center flex-grow-1 m-0">
+                            <i class="fas fa-cubes mr-2"></i>Cargar Materias
+                        </h3>
                     </div>
+                    
                     <div class="card-body p-4 bg-white">
                         @if ($errors->any())
                         <div class="alert alert-danger">

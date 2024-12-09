@@ -22,11 +22,10 @@ class MateriaController extends Controller
         $this->middleware('permission:editar-materia', ['only' => ['edit', 'update']]);
         $this->middleware('permission:borrar-materia', ['only' => ['destroy']]);
     }
-
-    // Mostrar una lista de todas las materias
-    public function index()
+ 
+    public function index(Request $request)
     {
-        $materias = Materia::paginate(10);
+        $materias = Materia::all();
         return view('materias.index', compact('materias'));
     }
 
@@ -159,7 +158,7 @@ public function reportePorRango(Request $request)
     // Mostrar una materia específica
     public function show(Materia $materia)
     {
-        return view('materias.show', compact('materia'));
+        // return view('materias.show', compact('materia'));
     }
 
     // Mostrar el formulario para editar una materia existente
