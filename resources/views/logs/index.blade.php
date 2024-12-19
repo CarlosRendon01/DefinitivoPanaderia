@@ -345,7 +345,7 @@
                 <div class="card">
                     <div class="card-body">
                         <table class="table table-striped mt-2" id="miTabla2">
-                            <thead style="background-color:#5f42d4">
+                            <thead style="background-color:#800000">
                                 <th style="color:#fff;" class="text-center">Id</th>
                                 <th style="color:#fff;" class="text-center">Fecha</th>
                                 <th style="color:#fff;" class="text-center">Accion</th>
@@ -363,7 +363,7 @@
                                     <td class="text-center">{{ $log->table }}</td>
                                     <td class="text-center">{{ $log->record_id }}</td>
                                     <td class="text-center">
-                                        <button class="btn btn-primary"
+                                        <button class="btn btn-success"
                                             onclick="mostrarInformacion({{ $log->id }})">Mostrar</button>
                                         <div id="info-{{ $log->id }}" style="display: none;">
                                             {{ $log->executedSQL }}

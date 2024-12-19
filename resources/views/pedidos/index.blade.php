@@ -638,7 +638,7 @@ body {
                             <!-- Botón para añadir nueva venta -->
                             @can('crear-pedido')
                             <a class="btn btn-success" href="{{ route('pedidos.create') }}">
-                                <i class="fas fa-plus"></i> Nuevo
+                                <i class="fas fa-plus"></i> Nuevo Pedido
                             </a>
                             @endcan
                         </div>
@@ -680,10 +680,10 @@ body {
                                                     @endcan
                                                 
                                                 @can('editar-pedido')
-                                                <a href="{{ route('pedidos.edit', $pedido->id) }}" class="btn btn-info">Editar</a>
-                                                <a class="btn btn-info" onclick="showModal({{ $pedido->id }})">Ver
+                                                <a href="{{ route('pedidos.edit', $pedido->id) }}" class="btn btn-success">Editar</a>
+                                                <a class="btn btn-primary" onclick="showModal({{ $pedido->id }})">Ver
                                                     Detalle</a>
-                                                <a href="{{ route('pedidos.pdf', $pedido->id) }}" class="btn btn-info">Generar PDF</a>
+                                                <a href="{{ route('pedidos.pdf', $pedido->id) }}" class="btn btn-primary">Generar PDF</a>
                                                 <a class="btn btn-primary" onclick="showTerminarModal({{ $pedido->id }}, {{ $pedido->total }})">Terminar</a>
                                                 @endcan
                                             </div>

@@ -698,7 +698,7 @@ body {
 
                             @can('crear-venta')
                             <a class="btn btn-success" href="{{ route('ventas.create') }}">
-                                <i class="fas fa-plus"></i> Nuevo
+                                <i class="fas fa-plus"></i> Nueva Venta
                             </a>
                             @endcan
                         </div>
