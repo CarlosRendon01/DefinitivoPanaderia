@@ -641,7 +641,7 @@ body {
                             <!-- Botón y formulario para el corte de caja -->
                             @can('editar-venta')
 
-                            <a class="btn btn-success" onclick="openCorteDeCajaModal();">
+                            <a class="btn btn-info" onclick="openCorteDeCajaModal();">
                                 <i class="fas fa-cash-register"></i> Corte de Caja
                             </a>
                             @endcan
@@ -708,7 +708,7 @@ body {
                         <div class="table-responsive">
 
                             <table class="table">
-                                <thead style="background-color:#8B4513">
+                                <thead style="background-color:#800000">
                                     <tr>
                                         <th class="text-center text-white">ID</th>
                                         <th class="text-center text-white">Concepto</th>
@@ -739,9 +739,9 @@ body {
                                                     @endcan
                                                 @can('editar-venta')
                                                 <a href="{{ route('ventas.edit', $venta->id) }}"
-                                                    class="btn btn-warning">Editar</a>
+                                                    class="btn btn-success">Editar</a>
                                                 
-                                                <a class="btn btn-info" onclick="showModal({{ $venta->id }})">Ver
+                                                <a class="btn btn-primary" onclick="showModal({{ $venta->id }})">Ver
                                                     Detalle</a>
                                                 <a href="{{ route('ventas.pdf', $venta->id) }}"
                                                     class="btn btn-primary">Generar PDF</a>

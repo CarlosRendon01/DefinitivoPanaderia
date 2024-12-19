@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('materias', MateriaController::class);
     Route::resource('pedidos', PedidoController::class);
     Route::resource('ventas', VentaController::class);
+    Route::resource('logs', LogController::class);
     Route::get('/ventas/crear', [VentaController::class, 'create']);
     Route::post('/productos/updateCantidad/{id}', [ProductoController::class, 'updateCantidad'])->name('productos.updateCantidad');
     Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
@@ -52,5 +53,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::post('/pedidos', [PedidoController::class, 'store'])->name('pedidos.store');
     Route::get('/pedidos/{id}/detalles', [PedidoController::class, 'detalles']);
     Route::get('/pedidos/{id}/pdf', [PedidoController::class, 'generarPDF'])->name('pedidos.pdf');
-    //Route::get('/grupos/{clave}/generarPDF', [GrupoController::class, 'generarPDF'])->name('grupos.generarPDF');
+    Route::post('/pedidos/{id}/finalizar', [PedidoController::class, 'finalizar'])->name('pedidos.finalizar');
+    //Route::get('/grupos/{clave}/generarPDF', [GrupoController::class, 'generarPDF'])->name('grupos.generarPDF');    
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pedido;
 
 class HomeController extends Controller
 {
@@ -22,8 +23,27 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
-    {
-        
-        return view('home');
-    }
+{
+    $hoy = now()->toDateString(); // Fecha de hoy
+
+    // Pedidos del día
+    $pedidosHoy = Pedido::whereDate('created_at', $hoy)->with('productos')->get();
+
+    // Contadores
+    $totalPedidos = Pedido::count();
+    $totalPedidosHoy = $pedidosHoy->count();
+    $totalAcumuladoHoy = $pedidosHoy->sum('total');
+    $totalProductosVendidosHoy = $pedidosHoy->reduce(function ($carry, $pedido) {
+        return $carry + $pedido->productos->sum('pivot.cantidad');
+    }, 0);
+
+    return view('home', compact(
+        'pedidosHoy',
+        'totalPedidos',
+        'totalPedidosHoy',
+        'totalAcumuladoHoy',
+        'totalProductosVendidosHoy'
+    ));
+}
+
 }

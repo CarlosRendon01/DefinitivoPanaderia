@@ -648,7 +648,7 @@ body {
                         <div class="table-responsive">
 
                             <table class="table">
-                                <thead style="background-color:#8B4513">
+                                <thead style="background-color:#800000">
                                     <tr>
                                         <th class="text-center text-white">ID</th>
                                         <th class="text-center text-white">Concepto</th>
@@ -680,10 +680,11 @@ body {
                                                     @endcan
                                                 
                                                 @can('editar-pedido')
-                                                <a href="{{ route('pedidos.edit', $pedido->id) }}" class="btn btn-warning">Editar</a>
+                                                <a href="{{ route('pedidos.edit', $pedido->id) }}" class="btn btn-info">Editar</a>
                                                 <a class="btn btn-info" onclick="showModal({{ $pedido->id }})">Ver
                                                     Detalle</a>
-                                                    <a href="{{ route('pedidos.pdf', $pedido->id) }}" class="btn btn-primary">Generar PDF</a>
+                                                <a href="{{ route('pedidos.pdf', $pedido->id) }}" class="btn btn-info">Generar PDF</a>
+                                                <a class="btn btn-primary" onclick="showTerminarModal({{ $pedido->id }}, {{ $pedido->total }})">Terminar</a>
                                                 @endcan
                                             </div>
                                         </td>
@@ -723,6 +724,42 @@ body {
                                         <button type="button" class="btn btn-secondary"
                                             onclick="closeModal()">Cerrar</button>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="terminarPedidoModal" class="custom-modal" style="display: none;">
+                            <div class="custom-modal-dialog">
+                                <div class="custom-modal-content">
+                                    <div class="custom-modal-header">
+                                        <h5 class="custom-modal-title">Finalizar Pedido</h5>
+                                        <button type="button" class="custom-modal-close" onclick="closeTerminarModal()">&times;</button>
+                                    </div>
+                                    <form id="terminarPedidoForm" method="POST" action="{{ url('pedidos/' . $pedido->id . '/finalizar') }}">
+                                        @csrf
+                                        <div class="custom-modal-body">
+                                            <p><strong>Total del Pedido:</strong> $<span id="totalPedido"></span></p>
+                                            <p><strong>Falta la mitad:</strong> $<span id="mitadPedido"></span></p>
+                                            <div class="form-group">
+                                                <label for="pagoPedido"><strong>Ingrese el pago:</strong></label>
+                                                <input type="number" id="pagoPedido" name="pago" class="form-control" min="0" step="0.01" placeholder="Ingrese el monto" value="{{ old('pago') }}">
+                                            </div>
+                                            @if ($errors->has('error'))
+                                                <div style="color: red; margin-top: 10px;">
+                                                    {{ $errors->first('error') }}
+                                                </div>
+                                            @endif
+                                            @if (session('success'))
+                                                <div style="color: green; margin-top: 10px;">
+                                                    {{ session('success') }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="custom-modal-footer">
+                                            <button type="button" class="btn btn-secondary" onclick="closeTerminarModal()">Cerrar</button>
+                                            <button type="submit" class="btn btn-primary">Procesar</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -949,6 +986,18 @@ searchInput.addEventListener('input', function() {
 
 
 <script>
+function showTerminarModal(pedidoId, totalPedido) {
+    var modal = document.getElementById('terminarPedidoModal');
+    modal.style.display = "block";
+
+    document.getElementById('totalPedido').innerText = totalPedido.toFixed(2);
+    document.getElementById('mitadPedido').innerText = (totalPedido / 2).toFixed(2);
+}
+
+function closeTerminarModal() {
+    var modal = document.getElementById('terminarPedidoModal');
+    modal.style.display = "none";
+}
 
 </script>
 @endsection

@@ -3,9 +3,15 @@
 @section('content')
 <section class="section">
     <div class="container">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h3 class="page__heading">Editar Pedido</h3>
+        <div class="row justify-content-center">
+        <div class="card col-md-8">
+            <div class="card-header d-flex align-items-center justify-content-between bg-primary text-white">
+                <a href="{{ url()->previous() }}" class="btn btn-pink text-white">
+                    <i class="fas fa-arrow-left mr-2"></i> Regresar
+                </a>
+                <h3 class="page__heading text-center flex-grow-1 m-0">
+                    <i class="fas fa-shopping-cart" mr-2"></i> Editar Pedido
+                </h3>
             </div>
             <div class="card-body">
                 @if ($errors->any())
@@ -53,5 +59,6 @@
             </div>
         </div>
     </div>
+</div>
 </section>
 @endsection
