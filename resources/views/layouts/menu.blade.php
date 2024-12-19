@@ -1,4 +1,14 @@
+@if(auth()->user()->canAny(['ver-rol', 'crear-rol', 'editar-rol', 'borrar-rol', 'ver-estudiante', 'crear-estudiante', 'editar-estudiante', 'borrar-estudiante', 'ver-grupos', 'ver-materias']))
 <li class="side-menus {{ Request::is('*') ? 'active' : '' }}">
+    @can('ver-dashboard')
+    <li class="{{ Request::is('home*') ? 'active' : '' }}">
+        <a class="nav-link d-flex align-items-center" href="/home">
+            <i class="fas fa-building" style="color: #9370DB; margin-right: 8px;"></i><span class="menu-text"
+                style="font-weight: 600; color: #333;">Dashboard</span>
+        </a>
+    </li>
+    @endcan
+    
     @can('ver-usuario')
     <li class="{{ Request::is('usuarios*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center" href="/usuarios">
@@ -55,10 +65,11 @@
     @can('ver-logs')
     <li class="{{ Request::is('logs*') ? 'active' : '' }}">
         <a class="nav-link d-flex align-items-center" href="/logs">
-            <i class="fas fa-clipboard-list" style="color: #32CD32; margin-right: 8px;"></i>
+            <i class="fas fa-clipboard" style="color: #32CD32; margin-right: 8px;"></i>
             <span class="menu-text" style="font-weight: 600; color: #333;">Logs</span>
         </a>
     </li>
     @endcan
 </ul>
+@endif
 
